@@ -1,0 +1,51 @@
+#!/bin/bash
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+echo "$DIR"
+
+me=`basename "$0"`
+echo me "$me"
+basedir=$(dirname $0)
+echo basedir "$basedir"
+count=$#
+backup(){
+	echo f "$1"
+	
+	if [  -d "$1" ]
+		then
+			cd "$1"
+		if [ ! -d "~/backup" ]; then
+	  		mkdir ~/backup
+		fi
+		echo pwd "$PWD"
+		folder=${PWD##*/}
+		now=$(date +'%Y%m%d_%H:%M:%S')
+		tgzPath="${folder}_${now}.tgz"
+		echo "$tgzPath"
+		tar -zcvf ~/backup/${tgzPath}.tgz *
+	fi
+}
+
+
+if [ $1 == "-q"  ] 
+then
+	echo "disable backup"
+	crontab -l | grep -v "$DIR/$me"  | crontab  -
+elif [ $1 == "-n" ]
+then
+	if [ -n $2 ]
+	then
+		echo "$USER"
+		echo "backup files under the folder per $2 minutes"
+		(crontab -l ; echo "*/$2 * * * * $DIR/$me  $PWD >> $DIR/v.log ") | crontab  -
+	fi
+else
+	echo "$1"
+	backup $1
+fi
+
