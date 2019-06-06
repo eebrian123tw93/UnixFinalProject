@@ -61,3 +61,8 @@ DATE_COMMAND="`date +%Y-%m-%d_%H:%M:%S`"
 tgz_name="$DATE_COMMAND".tgz
 tar -cpzf "$zip_folder_path$tgz_name" "$local_folder_path"
 echo "tgz file created at $zip_folder_path$tgz_name"
+
+if [ $remote ]; then
+  ssh -i "$identity_file" "$username@$remote_ip" "mkdir -p backup"
+  scp -i "$identity_file" "$zip_folder_path$tgz_name" "$username@$remote_ip":~/backup 
+fi
