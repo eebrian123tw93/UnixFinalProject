@@ -2,15 +2,15 @@
 
 # import config.sh
 source ../settings/config.sh
-backup_paths_file="../settings/backup-paths"
-md5_file="../settings/file-md5s"
-ignored_extensions_file="../settings/ignored-extensions"
 tmp_md5_file="temp-md5"
 
+echo "backup_path_file: $backup_path_file"
+echo "md5_file: $md5_file"
+
 # init and check neccessary files
-if [ ! -f "$backup_paths_file" ]; then
+if [ ! -f "$backup_path_file" ]; then
   echo "../settings/backup-paths file does not exist"
-  echo "please create the file or run the \"hydrogen init\" command"
+  echo "please create the file or run the \"./hydrogen init\" command"
   exit 1;
 fi
 
@@ -26,7 +26,7 @@ while read path; do
   while IFS= read -r line; do
     files_to_backup+=( "$line" )
   done < <( find "$path" -type f )
-done <../settings/backup-paths
+done <"$backup_path_file"
 
 # for each file to backup:
 # check if file has changed (via md5)
