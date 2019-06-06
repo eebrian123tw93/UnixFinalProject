@@ -20,6 +20,8 @@ ignore_file_path="$DIR/../settings/ignored-extensions"
 setting_folder_path="$DIR/../settings"
 
 
+zip_folder_key="zip_folder_path"
+local_folder_key="local_folder_path"
 identity_key="identity_file"
 remote_key="remote"
 remote_ip_key="remote_ip"
@@ -28,10 +30,6 @@ auto_key="auto"
 time_key="time"
 default_value="\"\""
 
-
-abspath() { 
-	old=`pwd`;new=$(dirname "$1");if [ "$new" != "." ]; then cd $new; fi;file=`pwd`/$(basename "$1");cd $old;echo $file; 
-}
 
 init(){
     echo "init 初始化..."
@@ -76,8 +74,11 @@ init(){
 	echo "$identity_key = $default_value" >> $config_file_path	
 	echo "$remote_key = false" >> $config_file_path	
 	echo "$username_key = $default_value" >> $config_file_path	
+	echo "$remote_ip_key = $default_value" >> $config_file_path
 	echo "$auto_key = $default_value" >> $config_file_path	
 	echo "$time_key = $default_value" >> $config_file_path
+	echo "$local_folder_key = $DIR/../backup" >> $config_file_path
+	echo "$zip_folder_key = $DIR/../zips" >> $config_file_path
 
 
 	echo "Input the folder you want to backup(-q will  exit)"
