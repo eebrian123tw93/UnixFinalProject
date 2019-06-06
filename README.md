@@ -1,6 +1,20 @@
-UnixFinalProject
+# HydrogenBackup
+## UnixFinalProject
 
+本Project為一個檔案備份與還原系統，有以下指令可以使用
 
-./main backup -d {folder_path} -t {second}
-./main restore -v {version_number}
-./main upload -d {folder_path} -t {second}
+| 指令                          | 作用                   |
+|-------------------------------|------------------------|
+| ./hydrogen.sh init            | 初始化備份還原系統     |
+| ./hydrogen.sh --backup        | 執行一次備份           |
+| ./hydrogen.sh --backup {秒數} | 每 {秒數} 執行一次備份 |
+| ./hydrogen.sh --backup -q     | 取消自動備份           |
+
+若想更改備份與還原設定，可編輯settings/資料夾底下的各個設定檔
+
+| 設定檔             | 內容                                                                                                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| config.sh          | 本地資料夾備份地點<br/> 備份資料壓縮檔地點<br/> 是否啟用遠端備份與還原<br/> 遠端電腦ssh host<br/> 遠端電腦ssh username<br/> 是否啟用自動備份<br/> 自動備份週期<br/> md5暫存檔位置<br/> 忽略副檔名檔案位置 |
+| backup-paths       | 想要備份的資料夾的絕對路徑                                                                                                                                                                                |
+| ignored-extensions | 備份時想忽略掉的副檔名                                                                                                                                                                                    |
+| file-md5s          | 已備份的各個檔案的md5值，用來比較檔案是否有變更過                                                                                                                                                         |                                              
