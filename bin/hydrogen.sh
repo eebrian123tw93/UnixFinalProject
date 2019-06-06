@@ -13,7 +13,7 @@ echo "$DIR"
 backup_script_path="$DIR/backup.sh"
 resore_script_path="$DIR/restore.sh"
 
-config_file_path="$DIR/../settings/config"
+config_file_path="$DIR/../settings/config.sh"
 backup_path_file_path="$DIR/../settings/backup-paths"
 md5_file_path="$DIR/../settings/file-md5s"
 ignore_file_path="$DIR/../settings/ignored-extensions"
@@ -71,14 +71,14 @@ init(){
 	echo $HOME > $backup_path_file_path 
 
 	echo -n "" > $config_file_path
-	echo "$identity_key = $default_value" >> $config_file_path	
-	echo "$remote_key = false" >> $config_file_path	
-	echo "$username_key = $default_value" >> $config_file_path	
-	echo "$remote_ip_key = $default_value" >> $config_file_path
-	echo "$auto_key = $default_value" >> $config_file_path	
-	echo "$time_key = $default_value" >> $config_file_path
-	echo "$local_folder_key = $DIR/../backup" >> $config_file_path
-	echo "$zip_folder_key = $DIR/../zips" >> $config_file_path
+	echo "$identity_key=$default_value" >> $config_file_path	
+	echo "$remote_key=false" >> $config_file_path	
+	echo "$username_key=$default_value" >> $config_file_path	
+	echo "$remote_ip_key=$default_value" >> $config_file_path
+	echo "$auto_key=$default_value" >> $config_file_path	
+	echo "$time_key=$default_value" >> $config_file_path
+	echo "$local_folder_key=$DIR/../backup" >> $config_file_path
+	echo "$zip_folder_key=$DIR/../zips" >> $config_file_path
 
 
 	echo "Input the folder you want to backup(-q will  exit)"
@@ -125,7 +125,7 @@ init(){
 	mv temp $config_file_path
 	if [ $remote_backup = "yes" ];
 	then
-		echo "$remote_key = true" >> $config_file_path
+		echo "$remote_key=true" >> $config_file_path
 		
 		echo "please input remote ip"
 		read remote_ip
@@ -137,11 +137,11 @@ init(){
 
 		grep -v "$remote_ip_key"  $config_file_path > temp
 		mv temp $config_file_path
-		echo "$remote_ip_key = $remote_ip" >> $config_file_path
+		echo "$remote_ip_key=$remote_ip" >> $config_file_path
 
 		grep -v "$username_key"  $config_file_path > temp
 		mv temp $config_file_path
-		echo "$username_key = $username" >> $config_file_path
+		echo "$username_key=$username" >> $config_file_path
 
 
 		old=`pwd`;new=$(dirname "$identity_file_path");
@@ -156,12 +156,12 @@ init(){
 
 		grep -v "$identity_key"  $config_file_path > temp
 		mv temp $config_file_path
-		echo "$identity_key = $file" >> $config_file_path
+		echo "$identity_key=$file" >> $config_file_path
 
 
 
 	else
-		echo "$remote_key = false" >> $config_file_path 
+		echo "$remote_key=false" >> $config_file_path 
 	fi
 	
 
