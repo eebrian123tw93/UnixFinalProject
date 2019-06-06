@@ -46,7 +46,7 @@ for file in "${files_to_backup[@]}"; do
       # copy to local backup folder
       echo "backup $file"
       file_folder=${file%/*}
-      copy_folder="$local_backup_path$file_folder"
+      copy_folder="$local_folder_path$file_folder"
       # make folder and do copy
       mkdir -p "$copy_folder" && cp "$file" "$copy_folder"
   fi
@@ -56,8 +56,8 @@ rm "$md5_file"
 cat "$tmp_md5_file" > "$md5_file"
 rm "$tmp_md5_file"
 
-mkdir -p "../tgzs"
+mkdir -p "$zip_folder_path"
 DATE_COMMAND="`date +%Y-%m-%d_%H:%M:%S`"
 tgz_name="$DATE_COMMAND".tgz
-tar -cpzf "../tgzs/$tgz_name" "$local_backup_path"
-echo "tgz file created at tgzs/$tgz_name"
+tar -cpzf "$zip_folder_path$tgz_name" "$local_folder_path"
+echo "tgz file created at $zip_folder_path$tgz_name"
