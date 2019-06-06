@@ -209,10 +209,10 @@ then
 				read source
 			done
 			echo "restore form $2"
-			exec "$resore_script_path $2"
+			$resore_script_path $2
 		else
 			echo "restore form $2"
-			exec "$resore_script_path $2"
+			$resore_script_path $2
 		fi
 	else
 		if [ ! -d $setting_folder_path ];
