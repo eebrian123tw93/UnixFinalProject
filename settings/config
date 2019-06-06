@@ -3,4 +3,4 @@ time = ""
 remote = true
 remote_ip = 192.168.1.1
 username = brian
-identity_file = /Users/brian/Desktop/UnixFinalProject/settings/file
+identity_file = /Users/brian/Desktop/UnixFinalProject/bin/backup.sh
