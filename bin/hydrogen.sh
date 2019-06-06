@@ -20,6 +20,7 @@ ignore_file_path="$DIR/../settings/ignored-extensions"
 setting_folder_path="$DIR/../settings"
 
 
+ignore_file_path_key="ignored_extensions_file"
 md5_file_key="md5_file"
 backup_path_file_key="backup_path_file"
 zip_folder_key="zip_folder_path"
@@ -83,6 +84,7 @@ init(){
 	echo "$zip_folder_key=$DIR/../zips/" >> $config_file_path
 	echo "$md5_file_key=$DIR/../settings/file-md5s" >> $config_file_path
 	echo "$backup_path_file_key=$DIR/../settings/backup-paths" >> $config_file_path
+	echo "$ignore_file_path_key=$DIR/../settings/ignored-extensions" >> $config_file_path
 
 
 	echo "Input the folder you want to backup(-q will  exit)"
