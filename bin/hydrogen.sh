@@ -20,6 +20,8 @@ ignore_file_path="$DIR/../settings/ignored-extensions"
 setting_folder_path="$DIR/../settings"
 
 
+md5_file_key="md5_file"
+backup_path_file_key="backup_path_file"
 zip_folder_key="zip_folder_path"
 local_folder_key="local_folder_path"
 identity_key="identity_file"
@@ -77,8 +79,10 @@ init(){
 	echo "$remote_ip_key=$default_value" >> $config_file_path
 	echo "$auto_key=$default_value" >> $config_file_path	
 	echo "$time_key=$default_value" >> $config_file_path
-	echo "$local_folder_key=$DIR/../backup" >> $config_file_path
-	echo "$zip_folder_key=$DIR/../zips" >> $config_file_path
+	echo "$local_folder_key=$DIR/../backup/" >> $config_file_path
+	echo "$zip_folder_key=$DIR/../zips/" >> $config_file_path
+	echo "$md5_file_key=$DIR/../settings/file-md5s" >> $config_file_path
+	echo "$backup_path_file_key=$DIR/../settings/backup-paths" >> $config_file_path
 
 
 	echo "Input the folder you want to backup(-q will  exit)"
@@ -207,6 +211,11 @@ then
 		else
 			echo "restore form $2"
 			exec "$resore_script_path $2"
+		fi
+	else
+		if [ ! -d $setting_folder_path ];
+		then
+			init
 		fi
 	fi		
 fi
