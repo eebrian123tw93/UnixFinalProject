@@ -1,0 +1,5 @@
+settings
+zips
+backup
+*.tgz
+.DS_Store
