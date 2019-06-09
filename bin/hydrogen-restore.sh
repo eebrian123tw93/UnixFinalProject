@@ -1,15 +1,6 @@
 #!/bin/bash
 
-# SOURCE="${BASH_SOURCE[0]}"
-# while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-#   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-#   SOURCE="$(readlink "$SOURCE")"
-#   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-# done
-# DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-# echo "$DIR"
-
-DIR="$HOME/hydrogen-backup/"
+DIR="$HOME/hydrogen-backup"
 
 source "$HOME/hydrogen-backup/configs/config.sh"
 
@@ -36,8 +27,7 @@ then
 	my_array=()
 	while IFS= read -r line; do
 	    my_array+=( "$line" )
-	done < <( ls $DIR )
-
+	done < <( ls $DIR/zips )
 
 	for ((idx=0; idx<${#my_array[@]}; ++idx)); do
 			number=$(($idx + 1))
@@ -58,21 +48,17 @@ then
 		file_name=${my_array[$number-1]}
 
 		echo $file_name
-	
-	if [ ! -d $temp_zip_file_path ];
-	then
-		mkdir $temp_zip_file_path
-	fi
-	if [ ! -d $temp_unzip_file_path ];
-	then
+
+	# if [ ! -d $temp_zip_file_path ];
+	# then
+		# mkdir $temp_zip_file_path
+	# fi
+	if [ ! -d $temp_unzip_file_path ]; then
 		mkdir $temp_unzip_file_path
 	fi
 
-	tar xvf $temp_zip_file_path/$file_name  -C $temp_unzip_file_path
-
-	cp -a "$temp_unzip_file_path/backup/." /
-		
-	rm -r -f $temp_zip_file_path
+	tar xvf $DIR/zips/$file_name  -C $temp_unzip_file_path
+	cp -a "$temp_unzip_file_path/." /
 	rm -r -f $temp_unzip_file_path
 
 elif [ $1 = "--remote" ];
@@ -121,16 +107,15 @@ elif [ $1 = "--remote" ];
 			mkdir $temp_unzip_file_path
 		fi
 
-		scp $username@$remote_ip:~/backup/$file_name $temp_zip_file_path
+		scp -i "$identity_file" $username@$remote_ip:~/backup/$file_name $temp_zip_file_path
 
 		tar xvf $temp_zip_file_path/$file_name  -C $temp_unzip_file_path
-
-		cp -a "$temp_unzip_file_path/backup/." /
+		# tar xvf $DIR/zips/$file_name  -C $temp_unzip_file_path
+		cp -a "$temp_unzip_file_path/." /
+		# cp -a "$temp_unzip_file_path/backup/." /
 
 		rm -r -f $temp_zip_file_path
 		rm -r -f $temp_unzip_file_path
-
-
 	else
 		echo "remote false,請修改config file"
 	fi

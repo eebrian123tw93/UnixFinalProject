@@ -40,13 +40,17 @@ mkdir -p "$zip_folder_path"
 chmod 777 "$zip_folder_path"
 DATE_COMMAND="`date +%Y-%m-%d_%H:%M:%S`"
 tgz_name="$DATE_COMMAND".tgz
-tar -cpzf "$zip_folder_path/$tgz_name" "$local_folder_path"
-chmod 777 "$zip_folder_path/$tgz_name"
-echo "tgz file created at $zip_folder_path/$tgz_name"
 
+echo "$zip_folder_path/$tgz_name $local_folder_path"
+cd $local_folder_path
+# tar -cpzf "$zip_folder_path/$tgz_name" "$local_folder_path"
+tar -cpzf "$zip_folder_path/$tgz_name" "./"
+chmod 777 "$zip_folder_path/$tgz_name"
+cd /usr/bin
+echo "tgz file created at $zip_folder_path/$tgz_name"
 echo "remove backup folder"
 rm -rf "$local_folder_path"
-
+#
 if [ $remote = true ]; then
   echo "backup to remote"
   ssh -i "$identity_file" "$username@$remote_ip" "mkdir -p backup"

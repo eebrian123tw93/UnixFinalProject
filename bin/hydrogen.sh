@@ -27,7 +27,7 @@ default_value="\"\""
 
 init(){
 
-  apt install -y toilet 
+  apt install -y toilet
 
   # if [ "$EUID" -ne 0 ]; then
   #   echo "run failed."
@@ -159,7 +159,7 @@ init(){
 		echo "$username_key=$username" >> $config_file_path
 
 
-		old=`pwd`;new=$(HOME_DIRname "$identity_file_path");
+		old=`pwd`;new=$(HOME_DIR "$identity_file_path");
 		if [ "$new" != "." ];
 		then
 		 cd $new;
@@ -182,7 +182,6 @@ if [ $# -ge 1 ] ;
 then
 	if [ "$1" = "init" ] ;
 	then
-
 		init
 	elif [ "$1" = "--backup"  ]; then
 		echo "--backup"
@@ -210,8 +209,8 @@ then
 				echo "please input --local or --remote (CTRL+c to exit)"
 				read source
 			done
-			echo "restore form $2"
-			$restore_script_path $2
+			echo "restore form $source"
+			$restore_script_path $source
 		else
 			echo "restore form $2"
 			$restore_script_path $2
