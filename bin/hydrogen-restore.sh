@@ -33,6 +33,48 @@ if [ $1 = "--local" ];
 then
 	echo "--local"
 
+	my_array=()
+	while IFS= read -r line; do
+	    my_array+=( "$line" )
+	done < <( ls $DIR )
+
+
+	for ((idx=0; idx<${#my_array[@]}; ++idx)); do
+			number=$(($idx + 1))
+	    	echo "$number" "${my_array[idx]}"
+		done
+
+		echo "select number you want to restore ?"
+		read number
+
+		while [ $number -gt ${#my_array[@]} ]; do
+			#statements
+			echo "too much"
+			read number
+		done
+
+		echo $number
+
+		file_name=${my_array[$number-1]}
+
+		echo $file_name
+	
+	if [ ! -d $temp_zip_file_path ];
+	then
+		mkdir $temp_zip_file_path
+	fi
+	if [ ! -d $temp_unzip_file_path ];
+	then
+		mkdir $temp_unzip_file_path
+	fi
+
+	tar xvf $temp_zip_file_path/$file_name  -C $temp_unzip_file_path
+
+	cp -a "$temp_unzip_file_path/backup/." /
+		
+	rm -r -f $temp_zip_file_path
+	rm -r -f $temp_unzip_file_path
+
 elif [ $1 = "--remote" ];
  then
 	echo "--remote"
