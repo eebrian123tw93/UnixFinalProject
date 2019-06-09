@@ -1,19 +1,20 @@
 #!/bin/bash
 
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-done
-DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-echo "$DIR"
+# SOURCE="${BASH_SOURCE[0]}"
+# while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+#   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+#   SOURCE="$(readlink "$SOURCE")"
+#   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+# done
+# DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+# echo "$DIR"
 
+DIR="$HOME/hydrogen-backup/"
 
-source "$DIR/../settings/config.sh"
+source "$HOME/hydrogen-backup/configs/config.sh"
 
-temp_zip_file_path="$DIR/../tempZips"
-temp_unzip_file_path="$DIR/../unZips"
+temp_zip_file_path="$DIR/tempZips"
+temp_unzip_file_path="$DIR/unZips"
 
 ignore_file_path_key="ignored_extensions_file"
 md5_file_key="md5_file"
@@ -35,7 +36,7 @@ then
 elif [ $1 = "--remote" ];
  then
 	echo "--remote"
-	
+
 	if [ $remote = "true" ];
 	then
 		echo "remote true"
@@ -47,7 +48,7 @@ elif [ $1 = "--remote" ];
 		while IFS= read -r line; do
 		    my_array+=( "$line" )
 		done < <( ssh -i $identity_file -o StrictHostKeyChecking=no -l $username $remote_ip "ls backup" )
-		
+
 		for ((idx=0; idx<${#my_array[@]}; ++idx)); do
 			number=$(($idx + 1))
 	    	echo "$number" "${my_array[idx]}"
@@ -83,7 +84,7 @@ elif [ $1 = "--remote" ];
 		tar xvf $temp_zip_file_path/$file_name  -C $temp_unzip_file_path
 
 		cp -a "$temp_unzip_file_path/backup/." /
-		
+
 		rm -r -f $temp_zip_file_path
 		rm -r -f $temp_unzip_file_path
 
@@ -91,5 +92,4 @@ elif [ $1 = "--remote" ];
 	else
 		echo "remote false,請修改config file"
 	fi
-fi 
-
+fi

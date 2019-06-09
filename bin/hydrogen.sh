@@ -27,6 +27,8 @@ default_value="\"\""
 
 init(){
 
+  apt install -y toilet 
+
   # if [ "$EUID" -ne 0 ]; then
   #   echo "run failed."
   #   echo "please re-run the command with sudo"
@@ -41,6 +43,9 @@ init(){
   # create folder to store local backups
   mkdir -p "$backup_store_folder"
 
+  chmod 777 "$HOME_DIR"
+  chmod 777 "$backup_store_folder"
+
   # change owner to user (to let user write to that folder)
   # chown "$SUDO_USER" "$backup_store_folder"
 
@@ -49,34 +54,36 @@ init(){
 	if [ ! -d $setting_folder_path ]; then
 		echo "create setting folder"
 		mkdir "$setting_folder_path"
+    chmod 777 "$setting_folder_path"
 	fi
 
 	if [ ! -f $config_file_path ]; then
 		echo "init config file"
 		touch "$config_file_path"
-    # chmod 777 $config_file_path
+    chmod 777 $config_file_path
 	fi
 
 	if [ ! -f $backup_path_file_path ]; then
 		echo "init backup path file"
 		touch "$backup_path_file_path"
-    # chmod 777 $backup_path_file_path
+    chmod 777 $backup_path_file_path
 	fi
 
 	if [ ! -f $md5_file_path ]; then
 		echo "init md5 file"
 		touch "$md5_file_path"
-    # chmod 777 $md5_file_path
+    chmod 777 $md5_file_path
 	fi
 
 	if [ ! -f $ignore_file_path ]; then
 		echo "init ignore file"
 		touch "$ignore_file_path"
-    # chmod 777 $ignore_file_path
+    chmod 777 $ignore_file_path
 	fi
 
   echo "setting $HOME as default folder to backup"
-	echo $HOME > $backup_path_file_path
+	# echo $HOME > $backup_path_file_path
+  echo $HOME/Desktop > $backup_path_file_path
 
 	echo -n "" > $config_file_path
 	echo "$identity_key=$default_value" >> $config_file_path
@@ -161,13 +168,14 @@ init(){
 		cd $old;
 		echo "$file" >> $backup_path_file_path
 
-
 		grep -v "$identity_key" $config_file_path > temp
 		mv temp $config_file_path
 		echo "$identity_key=$file" >> $config_file_path
 	else
 		echo "$remote_key=false" >> $config_file_path
 	fi
+
+  chmod 777 "$config_file_path"
 }
 
 if [ $# -ge 1 ] ;
